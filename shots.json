@@ -1,0 +1,60 @@
+{
+  "title": "2027 新東方快車 南北疆專列 13 日 — cinematic trailer (tour 7620)",
+  "fps": 25,
+  "size": [1920, 1080],
+  "letterbox": 2.39,
+  "xfade": 0.6,
+  "audio": "out/bgm.wav",
+  "font": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+  "font_bold": "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+  "heroine": "a Taiwanese woman in her early thirties, long black hair loosely tied, ivory silk blouse, camel wool coat, small brown leather satchel",
+  "segments": [
+    {"type": "card", "dur": 4.0, "lines": ["一列火車", "穿越整個新疆"], "sub": "夜行日遊 · 近 5,000 公里"},
+
+    {"type": "shot", "slot": "01_window_dawn", "dur": 4.5, "move": "in", "src": "stills/grassland.jpg",
+     "caption": "清晨 · 天山腳下"},
+    {"type": "shot", "slot": "02_train_tianshan", "dur": 5.0, "move": "panR", "src": "stills/train_cover.jpg",
+     "caption": "第三代豪華專列 · 2026 全新升級"},
+    {"type": "shot", "slot": "03_tianchi", "dur": 4.5, "move": "out", "src": "stills/tianchi.jpg",
+     "caption": "天山天池"},
+    {"type": "shot", "slot": "04_turpan", "dur": 4.0, "move": "in", "src": "stills/turpan_grapes.jpg",
+     "caption": "吐魯番 · 葡萄溝"},
+    {"type": "shot", "slot": "05_sugong", "dur": 3.5, "move": "up", "src": "stills/sugong.jpg",
+     "caption": "吐魯番 · 蘇公塔"},
+
+    {"type": "card", "dur": 3.5, "lines": ["南疆 · 絲路"], "sub": "喀什 · 塔縣 · 庫車"},
+
+    {"type": "shot", "slot": "06_kashgar_window", "dur": 4.0, "move": "in", "src": "stills/kashgar_window.jpg",
+     "caption": "喀什古城"},
+    {"type": "shot", "slot": "07_kashgar_faces", "dur": 3.5, "move": "panL", "src": "stills/kashgar_women.jpg",
+     "caption": "艾提尕爾清真寺 · 民族風情"},
+    {"type": "shot", "slot": "08_baishahu", "dur": 4.5, "move": "panR", "src": "stills/baishahu.jpg",
+     "caption": "白沙湖 · 海拔 3,300 米"},
+    {"type": "shot", "slot": "09_panlong", "dur": 5.0, "move": "up", "src": "stills/panlong.jpg",
+     "caption": "盤龍古道 · 639 彎"},
+    {"type": "shot", "slot": "10_karakul", "dur": 4.5, "move": "out", "src": "stills/karakul.jpg",
+     "caption": "慕士塔格峰 · 喀拉庫勒湖"},
+    {"type": "shot", "slot": "11_kizil", "dur": 3.5, "move": "in", "src": "stills/kizil.jpg",
+     "caption": "克孜爾千佛洞"},
+    {"type": "shot", "slot": "12_canyon", "dur": 4.0, "move": "panL", "src": "stills/canyon.jpg",
+     "caption": "天山神秘大峽谷"},
+
+    {"type": "card", "dur": 3.5, "lines": ["北疆 · 人類淨土"], "sub": "博斯騰湖 · 禾木 · 喀納斯 · 五彩灘"},
+
+    {"type": "shot", "slot": "13_bosten", "dur": 4.0, "move": "panR", "src": "stills/bosten_swans.jpg",
+     "caption": "博斯騰湖濕地"},
+    {"type": "shot", "slot": "14_hemu_dawn", "dur": 5.0, "move": "in", "src": "stills/hemu2.jpg",
+     "caption": "禾木村晨曦 · 獨家入住景區內"},
+    {"type": "shot", "slot": "15_kanas", "dur": 5.0, "move": "out", "src": "stills/kanas_lake.jpg",
+     "caption": "喀納斯湖 · 神仙灣 · 臥龍灣 · 月亮灣"},
+    {"type": "shot", "slot": "16_wucaitan", "dur": 4.5, "move": "panL", "src": "stills/wucaitan.jpg",
+     "caption": "布爾津 · 五彩灘"},
+    {"type": "shot", "slot": "17_platform_night", "dur": 5.0, "move": "panR", "src": "stills/train_cover.jpg",
+     "caption": "夜行 · 明早又是一片新的風景"},
+
+    {"type": "title", "slot": "18_title_plate", "dur": 7.0,
+     "big": "新東方快車",
+     "lines": ["2027 南北疆專列 13 日 · 4/22 出發", "US$6,999 起 · 全程無購物 · 門票全贈"],
+     "sub": "新聯華假期 XO Tours · xotours.net"}
+  ]
+}

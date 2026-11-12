@@ -1,0 +1,114 @@
+name: Render trailer
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["README.md"]
+  workflow_dispatch:
+    inputs:
+      stills:
+        description: "Shot sources: photos (tour's own) or ai (Workers AI flux, needs CF_ACCOUNT_ID + CF_API_TOKEN secrets)"
+        type: choice
+        options: [photos, ai]
+        default: photos
+      clips:
+        description: "Image-to-video route: none, seedance (ARK_API_KEY) or fal (FAL_KEY)"
+        type: choice
+        options: [none, seedance, fal]
+        default: none
+      quality:
+        description: "draft = 960x540 quick check, final = 1080p"
+        type: choice
+        options: [final, draft]
+        default: final
+      bgm_url:
+        description: "Optional music URL for yt-dlp (replaces the synthesised bed; your licence, your call)"
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      PYTHONUTF8: "1"
+      STILLS: ${{ github.event.inputs.stills || 'photos' }}
+      CLIPS: ${{ github.event.inputs.clips || 'none' }}
+      QUALITY: ${{ github.event.inputs.quality || 'final' }}
+      BGM_URL: ${{ github.event.inputs.bgm_url || '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: System packages (ffmpeg, Noto CJK fonts)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-cjk > /dev/null
+          ffmpeg -version | head -1
+          fc-list | grep -i "Noto Sans CJK" | head -3
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Python deps
+        run: pip install -q numpy pillow yt-dlp
+
+      - name: Prompts
+        run: python scripts/write_prompts.py
+
+      - name: AI stills (Workers AI flux-1-schnell)
+        if: env.STILLS == 'ai'
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: python scripts/gen_stills.py
+
+      - name: AI clips (image-to-video)
+        if: env.CLIPS != 'none'
+        env:
+          ARK_API_KEY: ${{ secrets.ARK_API_KEY }}
+          ARK_VIDEO_MODEL: ${{ vars.ARK_VIDEO_MODEL }}
+          FAL_KEY: ${{ secrets.FAL_KEY }}
+        run: python scripts/gen_clips.py --route "$CLIPS"
+
+      - name: Music bed
+        run: |
+          mkdir -p out
+          if [ -n "$BGM_URL" ]; then
+            yt-dlp -x --audio-format wav -o "out/bgm.%(ext)s" "$BGM_URL" || true
+          fi
+          if [ ! -s out/bgm.wav ]; then python scripts/make_bgm.py --seconds 110; fi
+
+      - name: Build
+        run: python scripts/build_trailer.py --quality "$QUALITY"
+
+      - name: Review sheet
+        run: |
+          f=out/trailer_7620.mp4; [ "$QUALITY" = draft ] && f=out/trailer_7620_draft.mp4
+          python scripts/review_frames.py "$f" --every 3
+          ffprobe -v error -show_entries format=duration -of csv=p=0 "$f"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trailer-7620-${{ github.run_number }}
+          path: |
+            out/trailer_7620*.mp4
+            out/review.jpg
+            shots/**/generated.png
+            shots/**/clip.mp4
+          if-no-files-found: error
+
+      - name: Release
+        if: env.QUALITY == 'final'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="run-${{ github.run_number }}"
+          gh release create "$tag" out/trailer_7620.mp4 out/review.jpg \
+            --title "Trailer 7620 $tag ($STILLS stills, $CLIPS clips)" \
+            --notes "Rendered by run ${{ github.run_id }}. Sources: $STILLS stills, $CLIPS clips." \
+            || gh release upload "$tag" out/trailer_7620.mp4 out/review.jpg --clobber
