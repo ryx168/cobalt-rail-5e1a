@@ -9,7 +9,7 @@ first frame is shots/<slot>/generated.png when it exists, else the tour photo
 from shots.json, cropped to 16:9 first. Slots without a prompt are skipped.
 Without the key for the chosen route the script exits 0 and does nothing.
 
-Model ids: ARK_VIDEO_MODEL (default seedance-1-0-pro-250528; put the Seedance 2.0
+Model ids: ARK_VIDEO_MODEL (default dreamina-seedance-2-0-260128, Seedance 2.0 on ModelArk; mini is dreamina-seedance-2-0-mini-260615; put another
 id there once your ModelArk account lists it) and FAL_VIDEO_MODEL (default
 fal-ai/kling-video/v2.1/standard/image-to-video). These paths were written
 from the public API docs and have NOT been exercised here: no key was available.
@@ -19,7 +19,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent.parent
 ARK_BASE = os.environ.get("ARK_BASE", "https://ark.ap-southeast.bytepluses.com/api/v3")
-ARK_MODEL = os.environ.get("ARK_VIDEO_MODEL", "seedance-1-0-pro-250528")
+ARK_MODEL = os.environ.get("ARK_VIDEO_MODEL", "dreamina-seedance-2-0-260128")
 FAL_MODEL = os.environ.get("FAL_VIDEO_MODEL", "fal-ai/kling-video/v2.1/standard/image-to-video")
 
 def http(url, data=None, headers=None, method=None, timeout=120):
